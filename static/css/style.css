@@ -1,0 +1,55 @@
+/* Tambahan kecil di atas Tailwind: animasi card, scrollbar, dan aturan cetak struk. */
+
+html { scroll-behavior: smooth; }
+
+.card-hover {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  border-color: #c7d2fe;
+  box-shadow: 0 14px 28px -16px rgb(49 46 129 / .45);
+}
+
+.struk { font-family: "Courier New", ui-monospace, monospace; }
+
+/* Sidebar di halaman Kasir default tertutup supaya layar transaksi bersih. */
+@media (min-width: 768px) {
+  body[data-page="kasir"] #sidebar { position: fixed; transform: translateX(0) !important; }
+}
+body[data-page="kasir"] #sidebar.nav-kasir-tutup { transform: translateX(-100%) !important; }
+body[data-page="kasir"] #btn-menu { display: grid !important; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { opacity: .4; }
+
+/* Cetak: sembunyikan semua, tampilkan struk saja. Ukuran & font diatur per profil printer dari JS. */
+@media print {
+  body * { visibility: hidden !important; }
+  #struk-cetak, #struk-cetak * { visibility: visible !important; }
+  #struk-cetak {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--lebar-struk, 80mm);
+    font-size: var(--ukuran-struk, 12px);
+    line-height: var(--baris-struk, 1.25);
+    margin: 0;
+    box-shadow: none !important;
+  }
+  /* Dot matrix & thermal tidak perlu background/border berwarna. */
+  #struk-cetak, #struk-cetak * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    border-color: #000 !important;
+  }
+  /* Timpa ukuran Tailwind (text-[11px], text-lg, dll.) supaya satu profil font dipakai semua. */
+  #struk-cetak * { font-size: inherit !important; }
+  .no-print { display: none !important; }
+}

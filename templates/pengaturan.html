@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block page %}pengaturan{% endblock %}
+{% block content %}
+<div class="max-w-4xl space-y-5">
+{% if session.get('role') == 'admin' %}
+  <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="p-4 border-b border-slate-100">
+      <h2 class="font-extrabold text-slate-900">Foto profil toko</h2>
+      <p class="text-xs text-slate-500 mt-0.5">Tampil di kop struk. Format jpg/png/gif/webp, maks 8 MB.</p>
+    </div>
+    <div class="p-4 flex flex-col sm:flex-row gap-4 sm:items-center">
+      <img id="logo-toko" src="{{ toko.foto or '/static/img/toko/default.svg' }}" alt="Logo toko" class="w-20 h-20 rounded-xl object-contain bg-slate-50 border border-slate-100">
+      <div class="flex-1 flex flex-wrap gap-2 items-center">
+        <input id="foto-toko" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="text-xs text-slate-600">
+        <button id="btn-simpan-foto-toko" class="h-10 px-5 rounded-xl bg-indigo-600 text-white text-sm font-bold">Simpan foto</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="p-4 border-b border-slate-100">
+      <h2 class="font-extrabold text-slate-900">Identitas &amp; struk</h2>
+      <p class="text-xs text-slate-500 mt-0.5">Berlaku untuk struk baru maupun cetak ulang dari Riwayat.</p>
+    </div>
+    <div class="p-4 grid gap-3 sm:grid-cols-2">
+      <div><label class="block text-xs font-bold text-slate-500 mb-1">Nama toko</label>
+        <input id="toko-nama" class="h-10 w-full px-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-400 text-sm"></div>
+      <div><label class="block text-xs font-bold text-slate-500 mb-1">Telepon</label>
+        <input id="toko-telepon" class="h-10 w-full px-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-400 text-sm"></div>
+      <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1">Alamat</label>
+        <input id="toko-alamat" class="h-10 w-full px-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-400 text-sm"></div>
+      <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1">Footer struk</label>
+        <input id="toko-footer" class="h-10 w-full px-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-400 text-sm"></div>
+    </div>
+    <div class="px-4 pb-4"><button id="btn-simpan-toko" class="h-10 px-5 rounded-xl bg-indigo-600 text-white text-sm font-bold">Simpan perubahan</button></div>
+  </section>
+{% else %}
+  <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="p-4 border-b border-slate-100">
+      <h2 class="font-extrabold text-slate-900">Foto profil kasir</h2>
+      <p class="text-xs text-slate-500 mt-0.5">Hanya foto akun Anda yang bisa diubah. Pengaturan toko hanya untuk admin.</p>
+    </div>
+    <div class="p-4 flex flex-col sm:flex-row gap-4 sm:items-center">
+      <img id="foto-profil" src="/static/img/kasir/default.svg" alt="Foto profil" class="w-20 h-20 rounded-full object-cover bg-slate-50 border border-slate-100">
+      <div class="flex-1">
+        <p class="text-sm font-bold text-slate-800">{{ session.get('kasir_nama') }}</p>
+        <p class="text-xs text-slate-500 mb-3">@{{ session.get('kasir_nama') }}</p>
+        <div class="flex flex-wrap gap-2 items-center">
+          <input id="foto-kasir" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="text-xs text-slate-600">
+          <button id="btn-simpan-foto-kasir" class="h-10 px-5 rounded-xl bg-indigo-600 text-white text-sm font-bold">Simpan foto</button>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+</div>
+{% endblock %}

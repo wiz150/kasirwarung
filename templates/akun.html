@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block page %}akun{% endblock %}
+{% block content %}
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+  <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center gap-2">
+    <div>
+      <h2 class="font-extrabold text-slate-900">Daftar kasir</h2>
+      <p class="text-xs text-slate-500 mt-0.5">Akun yang login akan otomatis muncul sebagai "Sedang digunakan" (diperbarui tiap 15 detik).</p>
+    </div>
+    <div class="sm:ml-auto flex gap-2">
+      <button id="btn-tambah-akun" class="h-9 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold">+ Kasir Baru</button>
+      <button id="btn-refresh-akun" class="h-9 px-4 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50">Refresh</button>
+    </div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm min-w-[560px]">
+      <thead class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide">
+        <tr><th class="text-left px-5 py-3 font-bold">Username</th><th class="text-left px-4 py-3 font-bold">Nama</th>
+            <th class="text-left px-4 py-3 font-bold">Role</th><th class="text-left px-4 py-3 font-bold">Status</th>
+            <th class="text-left px-5 py-3 font-bold">Terakhir aktif</th><th class="text-right px-4 py-3 font-bold">Saldo kas</th><th class="text-right px-5 py-3 font-bold">Aksi</th></tr>
+      </thead>
+      <tbody id="tabel-akun" class="divide-y divide-slate-100"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mt-5">
+  <div class="p-4 border-b border-slate-100">
+    <h2 class="font-extrabold text-slate-900">Kode cetak</h2>
+    <p class="text-xs text-slate-500 mt-0.5">Wajib dimasukkan kasir saat mencetak struk dari Riwayat. Minimum 4 karakter.</p>
+  </div>
+  <div class="p-4 flex flex-col sm:flex-row gap-2 sm:items-center">
+    <input id="kode-cetak-admin" type="password" minlength="4" placeholder="Kode baru" autocomplete="new-password" class="h-10 flex-1 px-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none focus:bg-white focus:border-indigo-400">
+    <button id="btn-simpan-kode" class="h-10 px-5 rounded-xl bg-indigo-600 text-white text-sm font-bold">Simpan kode</button>
+    <span id="status-kode" class="text-xs font-semibold text-slate-500">-</span>
+  </div>
+</section>
+
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mt-5">
+  <div class="p-4 border-b border-slate-100">
+    <h2 class="font-extrabold text-slate-900">Log aktivitas</h2>
+    <p class="text-xs text-slate-500 mt-0.5">Login, cetak, transaksi, dan perubahan akun (200 terakhir).</p>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm min-w-[560px]">
+      <thead class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide">
+        <tr><th class="text-left px-5 py-3 font-bold">Waktu</th><th class="text-left px-4 py-3 font-bold">Kasir</th>
+            <th class="text-left px-4 py-3 font-bold">Aksi</th><th class="text-left px-5 py-3 font-bold">Detail</th></tr>
+      </thead>
+      <tbody id="tabel-audit" class="divide-y divide-slate-100"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mt-5">
+  <div class="p-4 border-b border-slate-100">
+    <h2 class="font-extrabold text-slate-900">Riwayat shift</h2>
+    <p class="text-xs text-slate-500 mt-0.5">Buka/tutup Shift dilakukan kasir lewat tombol di header.</p>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm min-w-[640px]">
+      <thead class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide">
+        <tr><th class="text-left px-5 py-3 font-bold">Kasir</th><th class="text-left px-4 py-3 font-bold">Mulai</th>
+            <th class="text-left px-4 py-3 font-bold">Selesai</th><th class="text-right px-4 py-3 font-bold">Awal</th>
+            <th class="text-right px-4 py-3 font-bold">Tunai</th><th class="text-right px-4 py-3 font-bold">Akhir</th>
+            <th class="text-right px-5 py-3 font-bold">Selisih</th></tr>
+      </thead>
+      <tbody id="tabel-shift" class="divide-y divide-slate-100"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mt-5">
+  <div class="p-4 border-b border-slate-100">
+    <h2 class="font-extrabold text-slate-900">Backup &amp; restore</h2>
+    <p class="text-xs text-slate-500 mt-0.5">Dump otomatis tiap 02:00 WIB. Restore selalu ke database baru, tidak menimpa database yang dipakai.</p>
+  </div>
+  <div class="p-4 space-y-4 text-sm">
+    <div class="flex flex-wrap items-center gap-2">
+      <button id="btn-backup-now" class="h-10 px-5 rounded-xl bg-indigo-600 text-white text-sm font-bold">Backup sekarang</button>
+      <span id="status-backup" class="text-xs text-slate-500">-</span>
+    </div>
+    <div>
+      <label class="block text-xs font-bold text-slate-500 mb-1">Folder offsite (USB/cloud mount yang sudah terpasang)</label>
+      <div class="flex gap-2">
+        <input id="offsite-path" placeholder="/mnt/usb/kasir" class="h-10 flex-1 px-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-400 text-sm">
+        <button id="btn-simpan-offsite" class="h-10 px-5 rounded-xl border border-slate-200 text-sm font-semibold">Simpan</button>
+      </div>
+      <p id="status-offsite" class="text-xs text-slate-400 mt-1">Belum dikonfigurasi</p>
+    </div>
+    <div>
+      <label class="block text-xs font-bold text-slate-500 mb-1">Pulihkan dump ke database baru</label>
+      <div class="flex flex-wrap gap-2">
+        <select id="pilih-dump" class="h-10 px-3 rounded-xl border border-slate-200 text-sm"></select>
+        <input id="nama-db-restore" placeholder="kasir_test" class="h-10 px-3 rounded-xl border border-slate-200 text-sm">
+        <button id="btn-restore" class="h-10 px-5 rounded-xl bg-amber-500 text-white text-sm font-bold">Pulihkan</button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

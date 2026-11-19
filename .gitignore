@@ -1,0 +1,30 @@
+# Rahasia & konfigurasi mesin
+ADMIN_PASSWORD.txt
+db_password.txt
+secret.key
+offsite_path.txt
+backup_gagal.log
+.env
+*.pem
+cert/
+
+# Data & cadangan
+*.db
+backups/
+logs/
+screenshots/
+*.dump
+*.dump.enc
+
+# Upload pengguna (simpan placeholder saja)
+static/img/produk/*
+static/img/kasir/*
+static/img/toko/*
+!static/img/kasir/default.svg
+!static/img/toko/default.svg
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+README.md
